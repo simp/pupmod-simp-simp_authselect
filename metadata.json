@@ -12,6 +12,8 @@
     "simp_authselect"
   ],
   "dependencies": [
+    { "name": "simp/pam"
+    },
     {
       "name": "simp/iptables",
       "version_requirement": ">= 6.0.1 < 7.0.0"

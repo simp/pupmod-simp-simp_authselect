@@ -14,16 +14,16 @@ class simp_authselect (
   Enum['sssd','winbind', 'nis', 'minimal'] $base_profile = 'sssd',
 
 ) {
-  include pam
+  include 'pam'
   # Check against pam::auth_sections default is ['fingerprint', 'system', 'password', 'smartcard']
   # We need to iterate through this array and ONLY put the include in for the ones defined in that array
   # or the files we're referencing won't exist. I'm not entirely sure how to access pam::auth_sections variable
   # but if we can we need to so something like the following:
 
   contents = {}
-  $pam::auth_sections.each |$auth_section| do {
+  pam::auth_sections.each |$auth_section| do {
     :contents[$auth_section] => {
-      :content => "include 'simp/${auth_section}-auth'"
+      :content => "include '${custom_profile_name}/${auth_section}-auth'"
     }
   }
 
