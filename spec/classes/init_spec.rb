@@ -6,10 +6,10 @@ describe 'simp_authselect' do
       let(:facts){ os_facts }
 
       context 'with default values' do
-        let(:params) {{ 
-          :custom_profile_name => 'simp',
-          :base_profile => 'sssd',
-        }}
+        #let(:params) {{ 
+        #  :custom_profile_name => 'simp',
+        #  :base_profile => 'sssd',
+        #}}
         it { is_expected.to create_class('simp_authselect') }
       end
     end

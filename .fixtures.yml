@@ -15,8 +15,11 @@ fixtures:
       repo: https://github.com/simp/inspec-profile-disa_stig-el7
       branch:  master
       target: spec/fixtures/inspec_deps/inspec_profiles/profiles
+    pam:
+      repo: https://github.com/simp/pupmod-simp-pam
     simp_authselect:
-      repo: https://github.com/rgardner4012/pupmod-simp-simp_authselect.git
+      repo: https://github.com/rgardner4012/pupmod-simp-simp_authselect
       branch: initial_spec_tests
+    simp_options: https://github.com/simp/pupmod-simp-simp_options
   symlinks:
     simp_authselect: "#{source_dir}"
