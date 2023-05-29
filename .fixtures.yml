@@ -3,13 +3,13 @@ fixtures:
   repositories:
     iptables:
       repo: https://github.com/simp/pupmod-simp-iptables
-      ref: 6.2.2
+#      ref: 6.2.2
     simplib:
       repo: https://github.com/simp/pupmod-simp-simplib
-      ref: 3.15.3
+#      ref: 3.15.3
     stdlib:
       repo: https://github.com/simp/puppetlabs-stdlib
-      ref: 4.13.1
+#      ref: 4.13.1
     compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup
     disa_stig-el7-baseline:
       repo: https://github.com/simp/inspec-profile-disa_stig-el7

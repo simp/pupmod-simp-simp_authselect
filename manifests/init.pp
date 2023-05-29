@@ -14,7 +14,8 @@ class simp_authselect (
   Enum['sssd','winbind', 'nis', 'minimal'] $base_profile = 'sssd',
 
 ) {
-#  include 'pam'
+#  simplib::assert_optional_dependency($module_name, 'simp/pam')
+  include 'pam'
   # Check against pam::auth_sections default is ['fingerprint', 'system', 'password', 'smartcard']
   # We need to iterate through this array and ONLY put the include in for the ones defined in that array
   # or the files we're referencing won't exist. I'm not entirely sure how to access pam::auth_sections variable
