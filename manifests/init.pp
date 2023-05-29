@@ -20,7 +20,7 @@ class simp_authselect (
   # or the files we're referencing won't exist. I'm not entirely sure how to access pam::auth_sections variable
   # but if we can we need to so something like the following:
 
-  contents = {}
+  $contents = {}
 #  pam::auth_sections.each |$auth_section| do {
 #    :contents[$auth_section] => {
 #      :content => "include '${custom_profile_name}/${auth_section}-auth'"
