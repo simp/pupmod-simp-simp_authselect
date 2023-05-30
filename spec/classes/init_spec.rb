@@ -31,7 +31,7 @@ describe 'simp_authselect' do
         it { is_expected.to contain_class('authselect') }
         #it { pp catalogue.resources }
         #pam::auth_sections.each do |auth_section|
-        it { is_expected.to create_file("/etc/authselect/custom/simp/fingerprint-auth") }
+        it { is_expected.to create_file("/etc/authselect/custom/simp/fingerprint-auth").with( content: "include 'simp/fingerprint-auth'") }
         #  path: '/etc/authselect/custom/simp/nsswitch.conf'
         #}) }
       end
