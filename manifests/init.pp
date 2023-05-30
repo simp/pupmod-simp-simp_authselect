@@ -12,7 +12,7 @@
 class simp_authselect (
   String $custom_profile_name                            = 'simp',
   Enum['sssd','winbind', 'nis', 'minimal'] $base_profile = 'sssd',
-  Array[String] $authselect_section				 = $pam::auth_sections,
+  Array[String] $authselect_section				 = simplib::lookup('pam::auth_sections', { 'default_value' => ['fingerprint', 'system', 'password', 'smartcard'] })
 ) {
   include 'pam'
   # Check against pam::auth_sections default is ['fingerprint', 'system', 'password', 'smartcard']
@@ -20,12 +20,12 @@ class simp_authselect (
   # or the files we're referencing won't exist. I'm not entirely sure how to access pam::auth_sections variable
   # but if we can we need to so something like the following:
 
-  $contents = {}
-#  $authselect_section.each do |auth_section| 
-#    contents[:auth_section] => {
-#      :content => "include '${custom_profile_name}/${auth_section}-auth'"
+  $contents = create_authselect_content($authselect_section)
+#  $authselect_section.each  |String $auth_section| { 
+#    $contents[$auth_section] = {
+#      'content' => "include '${custom_profile_name}/${auth_section}-auth'"
 #    }
-#  end 
+#  }
 
   #instantiate the authselect class with the given authselect
   class { 'authselect':
