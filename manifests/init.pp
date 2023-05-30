@@ -12,13 +12,13 @@
 class simp_authselect (
   String $custom_profile_name                            = 'simp',
   Enum['sssd','winbind', 'nis', 'minimal'] $base_profile = 'sssd',
-  Optional[Array[String]] $authselect_sections				 = undef 
+  Optional[Array[String]] $authselect_sections				 = undef,
   Boolean $use_authselect                                = simplib::lookup('simp_options::authselect', { 'default_value' => false })
 ) {
   if $use_authselect {
     include 'pam'
     $_authselect_sections = $authselect_sections ? {
-      undef => simplib::lookup('pam::auth_sections', { 'default_value' => ['fingerprint', 'password', 'smartcard', 'system'] }), 
+      undef => $pam::auth_sections,
       default => $authselect_sections 
     }
     # Check against pam::auth_sections default is [ifingerprint', 'system', 'password', 'smartcard']
