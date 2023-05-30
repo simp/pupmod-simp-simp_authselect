@@ -22,7 +22,7 @@ class simp_authselect (
 
   $contents = $authselect_section.reduce({}) |$memo, $section| {
     $memo + {
-      $section => {
+      "${section}-auth" => {
         'content' => "include '${custom_profile_name}/${section}-auth'",
       },
     }
