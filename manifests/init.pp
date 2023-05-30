@@ -20,7 +20,13 @@ class simp_authselect (
   # or the files we're referencing won't exist. I'm not entirely sure how to access pam::auth_sections variable
   # but if we can we need to so something like the following:
 
-  $contents = create_authselect_content($authselect_section)
+  $contents = $authselect_section.reduce({}) |$memo, $section| {
+    $memo + {
+      $section => {
+        'content' => "include '${custom_profile_name}/${section}-auth'",
+      },
+    }
+  }
 #  $authselect_section.each  |String $auth_section| { 
 #    $contents[$auth_section] = {
 #      'content' => "include '${custom_profile_name}/${auth_section}-auth'"
