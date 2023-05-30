@@ -12,21 +12,19 @@
 class simp_authselect (
   String $custom_profile_name                            = 'simp',
   Enum['sssd','winbind', 'nis', 'minimal'] $base_profile = 'sssd',
-  Optional[Array[String]] $authselect_sections				 = undef,
+  Array[String] $authselect_sections				 = ['fingerprint', 'password', 'smartcard', 'system'],
   Boolean $use_authselect                                = simplib::lookup('simp_options::authselect', { 'default_value' => false })
 ) {
   if $use_authselect {
-    include 'pam'
-    $_authselect_sections = $authselect_sections ? {
-      undef => $pam::auth_sections,
-      default => $authselect_sections 
+    class { 'pam':
+      auth_sections => $authselect_sections
     }
     # Check against pam::auth_sections default is [ifingerprint', 'system', 'password', 'smartcard']
     # We need to iterate through this array and ONLY put the include in for the ones defined in that array
     # or the files we're referencing won't exist. I'm not entirely sure how to access pam::auth_sections variable
     # but if we can we need to so something like the following:
   
-    $contents = $_authselect_sections.reduce({}) |$memo, $section| {
+    $contents = $authselect_sections.reduce({}) |$memo, $section| {
       $memo + {
         "${section}-auth" => {
           'content' => "include '${custom_profile_name}/${section}-auth'",
