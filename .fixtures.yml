@@ -1,25 +1,15 @@
 ---
 fixtures:
   repositories:
-    iptables:
-      repo: https://github.com/simp/pupmod-simp-iptables
-#      ref: 6.2.2
     simplib:
       repo: https://github.com/simp/pupmod-simp-simplib
-#      ref: 3.15.3
     stdlib:
       repo: https://github.com/simp/puppetlabs-stdlib
-#      ref: 4.13.1
     compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup
-    disa_stig-el7-baseline:
-      repo: https://github.com/simp/inspec-profile-disa_stig-el7
-      branch:  master
-      target: spec/fixtures/inspec_deps/inspec_profiles/profiles
     pam:
       repo: https://github.com/simp/pupmod-simp-pam
     simp_authselect:
-      repo: https://github.com/rgardner4012/pupmod-simp-simp_authselect
-      branch: initial_spec_tests
+      repo: https://github.com/simp/pupmod-simp-simp_authselect
     authselect:
       repo: https://github.com/jcpunk/puppet-authselect
     simp_options: https://github.com/simp/pupmod-simp-simp_options

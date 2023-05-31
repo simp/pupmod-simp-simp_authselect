@@ -3,9 +3,18 @@
 # @example Basic usage
 #   include  'simp_authselect'
 #
-# @param authselect_settings
-#   A hash that allows you to pass in any settings for configuring the authselect
+# @param custom_profile_name
+#   String that must be provided in order to create a custom profile
+#
+# @param base_profile
+#   Must be one of the enumerated values
+#
+# @param authselect_sections
+#   An array that allows you to pass in any Pam::auth_sections for configuring the authselect
 #   class
+# 
+# @param use_authselect
+#   Boolean set to simp_options::authselect, must be true to utilize the class
 #
 # @author simp
 #
@@ -19,11 +28,7 @@ class simp_authselect (
     class { 'pam':
       auth_sections => $authselect_sections
     }
-    # Check against pam::auth_sections default is [ifingerprint', 'system', 'password', 'smartcard']
-    # We need to iterate through this array and ONLY put the include in for the ones defined in that array
-    # or the files we're referencing won't exist. I'm not entirely sure how to access pam::auth_sections variable
-    # but if we can we need to so something like the following:
-  
+    
     $contents = $authselect_sections.reduce({}) |$memo, $section| {
       $memo + {
         "${section}-auth" => {
@@ -32,7 +37,7 @@ class simp_authselect (
       }
     }
   
-    #instantiate the authselect class with the given authselect
+    #instantiate the authselect class with the given authselect_sections
     class { 'authselect':
       profile_manage => true,
       profile  => "custom/${custom_profile_name}",

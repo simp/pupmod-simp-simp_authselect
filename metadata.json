@@ -14,9 +14,13 @@
   "dependencies": [
     { "name": "simp/pam"
     },
-    {
-      "name": "simp/iptables",
-      "version_requirement": ">= 6.0.1 < 7.0.0"
+    { "name": "simp/compliance_markup"
+    },
+    { "name": "jcpunk/authselect"
+    },
+    { "name": "simp_options"
+    },
+    { "name": "oddjob"
     },
     {
       "name": "simp/simplib",
@@ -24,7 +28,7 @@
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.13.1 < 7.0.0"
+      "version_requirement": ">= 6.6.0 < 8.0.0"
     }
   ],
   "operatingsystem_support": [
