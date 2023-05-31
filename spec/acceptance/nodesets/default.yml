@@ -21,15 +21,15 @@ HOSTS:
         gpgkeys:
           - https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever
 
-  el6:
+  el8:
     roles:
       - client
-    platform:   el-6-x86_64
-    box:        centos/6
+    platform:   el-8-x86_64
+    box:        generic/centos8
     hypervisor: <%= hypervisor %>
     yum_repos:
       epel:
-        mirrorlist: 'https://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch=$basearch&country=us'
+        mirrorlist: 'https://mirrors.fedoraproject.org/mirrorlist?repo=epel-8&arch=$basearch&country=us'
         gpgkeys:
           - https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever
 
