@@ -54,6 +54,6 @@ class simp_authselect (
       },
     }
   } else {
-      notify { 'Authselect is not enabled, doing nothing': }
+    notify { 'Authselect is not enabled, doing nothing': }
   }
 }
