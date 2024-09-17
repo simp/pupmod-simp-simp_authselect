@@ -1,18 +1,13 @@
 ---
 fixtures:
   repositories:
-    simplib:
-      repo: https://github.com/simp/pupmod-simp-simplib
-    stdlib:
-      repo: https://github.com/simp/puppetlabs-stdlib
+    authselect: https://github.com/jcpunk/puppet-authselect
     compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup
-    pam:
-      repo: https://github.com/simp/pupmod-simp-pam
-    simp_authselect:
-      repo: https://github.com/simp/pupmod-simp-simp_authselect
-    authselect:
-      repo: https://github.com/jcpunk/puppet-authselect
-    simp_options: https://github.com/simp/pupmod-simp-simp_options
     oddjob: https://github.com/simp/pupmod-simp-oddjob.git
+    pam: https://github.com/simp/pupmod-simp-pam
+    simp_authselect: https://github.com/simp/pupmod-simp-simp_authselect
+    simp_options: https://github.com/simp/pupmod-simp-simp_options
+    simplib: https://github.com/simp/pupmod-simp-simplib
+    stdlib: https://github.com/simp/puppetlabs-stdlib
   symlinks:
     simp_authselect: "#{source_dir}"

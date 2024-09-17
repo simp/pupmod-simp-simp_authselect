@@ -19,16 +19,21 @@
 # @author simp
 #
 class simp_authselect (
-  String $custom_profile_name                            = 'simp',
-  Enum['sssd','winbind', 'nis', 'minimal'] $base_profile = 'sssd',
-  Array[String] $authselect_sections				 = ['fingerprint', 'password', 'smartcard', 'system'],
-  Boolean $use_authselect                                = simplib::lookup('simp_options::authselect', { 'default_value' => false })
+  String        $custom_profile_name = 'simp',
+  Enum[
+    'sssd',
+    'winbind',
+    'nis',
+    'minimal'
+  ]             $base_profile        = 'sssd',
+  Array[String] $authselect_sections = ['fingerprint', 'password', 'smartcard', 'system'],
+  Boolean       $use_authselect      = simplib::lookup('simp_options::authselect', { 'default_value' => false }),
 ) {
   if $use_authselect {
     class { 'pam':
       auth_sections => $authselect_sections
     }
-    
+
     $contents = $authselect_sections.reduce({}) |$memo, $section| {
       $memo + {
         "${section}-auth" => {
@@ -36,19 +41,19 @@ class simp_authselect (
         },
       }
     }
-  
+
     #instantiate the authselect class with the given authselect_sections
     class { 'authselect':
-      profile_manage => true,
-      profile  => "custom/${custom_profile_name}",
+      profile_manage  => true,
+      profile         => "custom/${custom_profile_name}",
       custom_profiles => {
         $custom_profile_name => {
           base_profile => $base_profile,
-          contents => $contents,
+          contents     => $contents,
         }
       },
     }
   } else {
-      notify { "Authselect is not enabled, doing nothing": }
+    notify { 'Authselect is not enabled, doing nothing': }
   }
 }
