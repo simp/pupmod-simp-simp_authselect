@@ -13,12 +13,11 @@ if ENV['PUPPET_DEBUG']
   Puppet::Util::Log.newdestination(:console)
 end
 
-
 # RSpec Material
 fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
-module_name = File.basename(File.expand_path(File.join(__FILE__,'../..')))
+module_name = File.basename(File.expand_path(File.join(__FILE__, '../..')))
 
-default_hiera_config =<<-DEFAULT_HIERA_CONFIG
+default_hiera_config = <<-DEFAULT_HIERA_CONFIG
 ---
 version: 5
 hierarchy:
@@ -35,7 +34,6 @@ hierarchy:
 defaults:
   data_hash: yaml_data
 DEFAULT_HIERA_CONFIG
-
 
 # This can be used from inside your spec tests to set the testable environment.
 # You can use this to stub out an ENC.
@@ -70,24 +68,24 @@ end
 #
 # Note: Any colons (:) are replaced with underscores (_) in the class name.
 def set_hieradata(hieradata)
-    RSpec.configure { |c| c.default_facts['custom_hiera'] = hieradata }
+  RSpec.configure { |c| c.default_facts['custom_hiera'] = hieradata }
 end
 
-if not File.directory?(File.join(fixture_path,'hieradata')) then
-  FileUtils.mkdir_p(File.join(fixture_path,'hieradata'))
+unless File.directory?(File.join(fixture_path, 'hieradata'))
+  FileUtils.mkdir_p(File.join(fixture_path, 'hieradata'))
 end
 
-if not File.directory?(File.join(fixture_path,'modules',module_name)) then
-  FileUtils.mkdir_p(File.join(fixture_path,'modules',module_name))
+unless File.directory?(File.join(fixture_path, 'modules', module_name))
+  FileUtils.mkdir_p(File.join(fixture_path, 'modules', module_name))
 end
 
 RSpec.configure do |c|
   # If nothing else...
   c.default_facts = {
-    :production => {
-      #:fqdn           => 'production.rspec.test.localdomain',
-      :path           => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
-      :concat_basedir => '/tmp'
+    production: {
+      # :fqdn           => 'production.rspec.test.localdomain',
+      path: '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
+      concat_basedir: '/tmp'
     }
   }
 
@@ -96,12 +94,12 @@ RSpec.configure do |c|
 
   c.module_path = File.join(fixture_path, 'modules')
   c.manifest_dir = File.join(fixture_path, 'manifests')
-  c.hiera_config = File.join(fixture_path,'hieradata','hiera.yaml')
+  c.hiera_config = File.join(fixture_path, 'hieradata', 'hiera.yaml')
 
   # Useless backtrace noise
   backtrace_exclusion_patterns = [
-    /spec_helper/,
-    /gems/
+    %r{spec_helper},
+    %r{gems},
   ]
 
   if c.respond_to?(:backtrace_exclusion_patterns)
@@ -111,7 +109,7 @@ RSpec.configure do |c|
   end
 
   c.before(:all) do
-    data = YAML.load(default_hiera_config)
+    data = YAML.safe_load(default_hiera_config)
     File.open(c.hiera_config, 'w') do |f|
       f.write data.to_yaml
     end
@@ -122,7 +120,7 @@ RSpec.configure do |c|
 
     if defined?(environment)
       set_environment(environment)
-      FileUtils.mkdir_p(File.join(@spec_global_env_temp,environment.to_s))
+      FileUtils.mkdir_p(File.join(@spec_global_env_temp, environment.to_s))
     end
 
     # ensure the user running these tests has an accessible environmentpath
@@ -133,9 +131,9 @@ RSpec.configure do |c|
 
     # sanitize hieradata
     if defined?(hieradata)
-      set_hieradata(hieradata.gsub(':','_'))
+      set_hieradata(hieradata.tr(':', '_'))
     elsif defined?(class_name)
-      set_hieradata(class_name.gsub(':','_'))
+      set_hieradata(class_name.tr(':', '_'))
     end
   end
 
@@ -147,9 +145,7 @@ RSpec.configure do |c|
 end
 
 Dir.glob("#{RSpec.configuration.module_path}/*").each do |dir|
-  begin
-    Pathname.new(dir).realpath
-  rescue
-    fail "ERROR: The module '#{dir}' is not installed. Tests cannot continue."
-  end
+  Pathname.new(dir).realpath
+rescue
+  raise "ERROR: The module '#{dir}' is not installed. Tests cannot continue."
 end
