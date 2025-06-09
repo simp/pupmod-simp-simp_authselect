@@ -1,30 +1,33 @@
-RSpec.configure do |c|
-  c.mock_with :rspec
-end
+# frozen_string_literal: true
+
+#
+# ------------------------------------------------------------------------------
+#         NOTICE: **This file is maintained with puppetsync**
+#
+# This file is automatically updated as part of a puppet module baseline.
+# The next baseline sync will overwrite any local changes made to this file.
+# ------------------------------------------------------------------------------
 
 require 'puppetlabs_spec_helper/module_spec_helper'
 require 'rspec-puppet'
-require 'pathname'
 require 'simp/rspec-puppet-facts'
 include Simp::RspecPuppetFacts
+
+require 'pathname'
+
+# RSpec Material
+fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
+module_name = File.basename(File.expand_path(File.join(__FILE__, '../..')))
 
 if ENV['PUPPET_DEBUG']
   Puppet::Util::Log.level = :debug
   Puppet::Util::Log.newdestination(:console)
 end
 
-# RSpec Material
-fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
-module_name = File.basename(File.expand_path(File.join(__FILE__, '../..')))
-
-default_hiera_config = <<-DEFAULT_HIERA_CONFIG
+default_hiera_config = <<~HIERA_CONFIG
 ---
 version: 5
 hierarchy:
-  - name: SIMP Compliance Engine
-    lookup_key: compliance_markup::enforcement
-    options:
-      enabled_sce_versions: [2]
   - name: Custom Test Hiera
     path: "%{custom_hiera}.yaml"
   - name: "%{module_name}"
@@ -33,7 +36,8 @@ hierarchy:
     path: default.yaml
 defaults:
   data_hash: yaml_data
-DEFAULT_HIERA_CONFIG
+  datadir: "stub"
+HIERA_CONFIG
 
 # This can be used from inside your spec tests to set the testable environment.
 # You can use this to stub out an ENC.
@@ -93,7 +97,8 @@ RSpec.configure do |c|
   c.mock_with :rspec
 
   c.module_path = File.join(fixture_path, 'modules')
-  c.manifest_dir = File.join(fixture_path, 'manifests')
+  c.manifest_dir = File.join(fixture_path, 'manifests') if c.respond_to?(:manifest_dir)
+
   c.hiera_config = File.join(fixture_path, 'hieradata', 'hiera.yaml')
 
   # Useless backtrace noise
@@ -108,12 +113,24 @@ RSpec.configure do |c|
     c.backtrace_clean_patterns = backtrace_exclusion_patterns
   end
 
+  # rubocop:disable RSpec/BeforeAfterAll
   c.before(:all) do
     data = YAML.safe_load(default_hiera_config)
+    data.each_key do |key|
+      next unless data[key].is_a?(Hash)
+
+      if data[key][:datadir] == 'stub'
+        data[key][:datadir] = File.join(fixture_path, 'hieradata')
+      elsif data[key]['datadir'] == 'stub'
+        data[key]['datadir'] = File.join(fixture_path, 'hieradata')
+      end
+    end
+
     File.open(c.hiera_config, 'w') do |f|
       f.write data.to_yaml
     end
   end
+  # rubocop:enable RSpec/BeforeAfterAll
 
   c.before(:each) do
     @spec_global_env_temp = Dir.mktmpdir('simpspec')
@@ -125,8 +142,8 @@ RSpec.configure do |c|
 
     # ensure the user running these tests has an accessible environmentpath
     Puppet[:digest_algorithm] = 'sha256'
-    Puppet[:environmentpath]  = @spec_global_env_temp
-    Puppet[:user]  = Etc.getpwuid(Process.uid).name
+    Puppet[:environmentpath] = @spec_global_env_temp
+    Puppet[:user] = Etc.getpwuid(Process.uid).name
     Puppet[:group] = Etc.getgrgid(Process.gid).name
 
     # sanitize hieradata
@@ -146,6 +163,6 @@ end
 
 Dir.glob("#{RSpec.configuration.module_path}/*").each do |dir|
   Pathname.new(dir).realpath
-rescue
+rescue StandardError
   raise "ERROR: The module '#{dir}' is not installed. Tests cannot continue."
 end
