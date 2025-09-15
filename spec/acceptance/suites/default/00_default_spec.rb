@@ -4,7 +4,7 @@ test_name 'simp_authselect class'
 
 describe 'simp_authselect class' do
   let(:manifest) do
-    <<-EOS
+    <<~EOS
       class { 'simp_authselect': }
     EOS
   end

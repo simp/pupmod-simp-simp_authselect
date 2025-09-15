@@ -7,14 +7,16 @@ describe 'simp_authselect' do
 
       context 'with default authselect values' do
         let(:pre_condition) do
-          'class { "simp_options":
-            authselect => true
-          }'
+          <<~END
+            class { 'simp_options':
+              authselect => true,
+            }
+          END
         end
         let(:params) do
           {
             custom_profile_name: 'simp',
-         base_profile: 'sssd',
+            base_profile: 'sssd',
           }
         end
 
@@ -31,15 +33,17 @@ describe 'simp_authselect' do
 
       context 'with single authselect value' do
         let(:pre_condition) do
-          'class { "simp_options":
-            authselect => true
-          }'
+          <<~END
+            class { 'simp_options':
+              authselect => true,
+            }
+          END
         end
         let(:params) do
           {
             custom_profile_name: 'simp',
-         base_profile: 'sssd',
-         authselect_sections: ['smartcard'],
+            base_profile: 'sssd',
+            authselect_sections: ['smartcard'],
           }
         end
 
@@ -53,15 +57,17 @@ describe 'simp_authselect' do
 
       context 'with authselect set to false' do
         let(:pre_condition) do
-          'class { "simp_options":
-            authselect => false
-          }'
+          <<~END
+            class { 'simp_options':
+              authselect => false,
+            }
+          END
         end
         let(:params) do
           {
             custom_profile_name: 'simp',
-         base_profile: 'sssd',
-         authselect_sections: ['smartcard'],
+            base_profile: 'sssd',
+            authselect_sections: ['smartcard'],
           }
         end
 
