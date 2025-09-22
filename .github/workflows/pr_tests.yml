@@ -122,6 +122,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: 'Install Ruby ${{matrix.puppet.ruby_version}}'
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{matrix.puppet.ruby_version}}
           bundler-cache: true
