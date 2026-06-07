@@ -30,8 +30,13 @@ class simp_authselect (
   Boolean       $use_authselect      = simplib::lookup('simp_options::authselect', { 'default_value' => false }),
 ) {
   if $use_authselect {
+    # simp_authselect takes full ownership of the authselect class and custom
+    # profile declaration below, so pam must not also try to do it (otherwise
+    # both modules race to declare Class[Authselect] and Authselect::Custom_profile
+    # with different parameters).
     class { 'pam':
-      auth_sections => $authselect_sections
+      auth_sections  => $authselect_sections,
+      use_authselect => false,
     }
 
     $contents = $authselect_sections.reduce({}) |$memo, $section| {
