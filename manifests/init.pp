@@ -30,28 +30,16 @@ class simp_authselect (
   Boolean       $use_authselect      = simplib::lookup('simp_options::authselect', { 'default_value' => false }),
 ) {
   if $use_authselect {
+    # Delegate authselect management to the pam module, which owns the
+    # authselect profile and the 'authselect' class as of pam 9.0. This class
+    # only translates its parameters into pam's authselect parameters; it must
+    # NOT declare the 'authselect' class itself, or the catalog would contain a
+    # duplicate Class[authselect] (pam declares it in pam::config).
     class { 'pam':
-      auth_sections => $authselect_sections
-    }
-
-    $contents = $authselect_sections.reduce({}) |$memo, $section| {
-      $memo + {
-        "${section}-auth" => {
-          'content' => "include '${custom_profile_name}/${section}-auth'",
-        },
-      }
-    }
-
-    #instantiate the authselect class with the given authselect_sections
-    class { 'authselect':
-      profile_manage  => true,
-      profile         => "custom/${custom_profile_name}",
-      custom_profiles => {
-        $custom_profile_name => {
-          base_profile => $base_profile,
-          contents     => $contents,
-        }
-      },
+      use_authselect          => true,
+      authselect_profile_name => $custom_profile_name,
+      authselect_base_profile => $base_profile,
+      auth_sections           => $authselect_sections,
     }
   } else {
     notify { 'Authselect is not enabled, doing nothing': }
