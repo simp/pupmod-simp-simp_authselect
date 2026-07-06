@@ -1,2 +1,4 @@
 ---
+# Module default data
 # simp_authselect::parameter_name: 'value'
+{}

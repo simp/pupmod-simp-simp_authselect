@@ -22,13 +22,20 @@ describe 'simp_authselect' do
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('simp_authselect') }
-        it { is_expected.to contain_class('pam') }
+        # authselect management is delegated to pam (which owns the
+        # 'authselect' class and builds the custom profile as of pam 9.0);
+        # simp_authselect only translates its parameters into pam's.
+        it {
+          is_expected.to contain_class('pam').with(
+            use_authselect: true,
+            authselect_profile_name: 'simp',
+            authselect_base_profile: 'sssd',
+            auth_sections: ['fingerprint', 'password', 'smartcard', 'system'],
+          )
+        }
+        # 'authselect' is still in the catalog, but declared by pam (not here),
+        # so there is no duplicate Class[authselect]
         it { is_expected.to contain_class('authselect') }
-        # it { pp catalogue.resources }
-        it { is_expected.to create_file('/etc/authselect/custom/simp/fingerprint-auth').with(content: "include 'simp/fingerprint-auth'") }
-        it { is_expected.to create_file('/etc/authselect/custom/simp/smartcard-auth').with(content: "include 'simp/smartcard-auth'") }
-        it { is_expected.to create_file('/etc/authselect/custom/simp/password-auth').with(content: "include 'simp/password-auth'") }
-        it { is_expected.to create_file('/etc/authselect/custom/simp/system-auth').with(content: "include 'simp/system-auth'") }
       end
 
       context 'with single authselect value' do
@@ -49,10 +56,15 @@ describe 'simp_authselect' do
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('simp_authselect') }
-        it { is_expected.to contain_class('pam') }
+        it {
+          is_expected.to contain_class('pam').with(
+            use_authselect: true,
+            authselect_profile_name: 'simp',
+            authselect_base_profile: 'sssd',
+            auth_sections: ['smartcard'],
+          )
+        }
         it { is_expected.to contain_class('authselect') }
-        # it { pp catalogue.resources }
-        it { is_expected.to create_file('/etc/authselect/custom/simp/smartcard-auth').with(content: "include 'simp/smartcard-auth'") }
       end
 
       context 'with authselect set to false' do
