@@ -72,4 +72,3 @@ Data type: `Boolean`
 Boolean set to simp_options::authselect, must be true to utilize the class
 
 Default value: `simplib::lookup('simp_options::authselect', { 'default_value' => false })`
-
