@@ -1,6 +1,6 @@
 {
   "name": "simp-simp_authselect",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "simp",
   "summary": "This module wraps jcpunk/authselect and configures the pam authselect files in a way that is compatible with the simp/pam module.",
   "license": "Apache-2.0",
@@ -26,7 +26,7 @@
     },
     {
       "name": "simp/simp_options",
-      "version_requirement": ">= 1.0.0 < 3.0.0"
+      "version_requirement": ">= 1.0.0 < 4.0.0"
     },
     {
       "name": "simp/oddjob",
@@ -85,7 +85,7 @@
   "requirements": [
     {
       "name": "openvox",
-      "version_requirement": ">= 8.0.0 < 9.0.0"
+      "version_requirement": ">= 8.0.0 < 10.0.0"
     }
   ]
 }
