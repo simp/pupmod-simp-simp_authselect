@@ -1,3 +1,8 @@
+* Fri Nov 13 2026 Steven Pritchard <steve@sicura.us> - 1.1.1
+- Depend on `puppet/authselect` (Vox Pupuli) instead of `jcpunk/authselect`,
+  which moved to Vox Pupuli; this matches the `simp/pam` optional dependency
+  that actually declares the `authselect` class. Accept 2.x
+
 * Thu Oct 08 2026 Steven Pritchard <steve@sicura.us> - 1.1.0
 - Add support for OpenVox 9
 - Update metadata.json dependency ranges from the Forge
