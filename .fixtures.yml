@@ -1,7 +1,7 @@
 ---
 fixtures:
   repositories:
-    authselect: https://github.com/jcpunk/puppet-authselect
+    authselect: https://github.com/voxpupuli/puppet-authselect.git
     compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup
     oddjob: https://github.com/simp/pupmod-simp-oddjob.git
     pam: https://github.com/simp/pupmod-simp-pam

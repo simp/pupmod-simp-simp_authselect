@@ -5,7 +5,7 @@ This file provides guidance to AI agents when working with code in this reposito
 ## What this module does
 
 `simp-simp_authselect` is an early-stage SIMP Puppet module (version `0.1.0`)
-that wraps the community `jcpunk/authselect` module and wires it up so that the
+that wraps the community `puppet/authselect` module and wires it up so that the
 `authselect` PAM profiles it generates are **compatible with the SIMP `pam`
 module**. On modern Enterprise Linux (EL8+), `authselect` is the supported way
 to manage the stack of `*-auth` PAM include files; this module builds a
@@ -105,14 +105,14 @@ Module dependencies (from `metadata.json`) — all seven are hard dependencies;
 there are **no** optional dependencies (no `simplib::assert_optional_dependency`
 calls anywhere in the module):
 
-- `simp/pam` `>= 7.0.0 < 8.0.0` (the `pam` class this module wraps)
-- `simp/compliance_markup` `>= 3.8.0 < 4.0.0`
-- `jcpunk/authselect` `>= 1.0.0 < 2.0.0` (the `authselect` class and its
+- `simp/pam` `>= 7.0.0 < 10.0.0` (the `pam` class this module wraps)
+- `simp/compliance_markup` `>= 3.8.0 < 5.0.0`
+- `puppet/authselect` `>= 1.1.2 < 3.0.0` (the `authselect` class and its
   `custom_profiles` mechanism)
-- `simp/simp_options` `>= 1.0.0 < 2.0.0` (the `simp_options::authselect` toggle)
-- `simp/oddjob` `>= 2.0.0 < 3.0.0`
-- `simp/simplib` `>= 3.15.0 < 5.0.0` (provides `simplib::lookup`)
-- `puppetlabs/stdlib` `>= 6.6.0 < 10.0.0`
+- `simp/simp_options` `>= 1.0.0 < 4.0.0` (the `simp_options::authselect` toggle)
+- `simp/oddjob` `>= 2.0.0 < 4.0.0`
+- `simp/simplib` `>= 3.15.0 < 8.0.0` (provides `simplib::lookup`)
+- `puppetlabs/stdlib` `>= 6.6.0 < 11.0.0`
 
 Fixture dependencies (from `.fixtures.yml`, checked out for test compilation):
 all seven runtime deps above, plus the module itself symlinked in.
